@@ -1,0 +1,11 @@
+alive_progress==3.2.0
+autopep8==2.3.1
+beautifulsoup4==4.12.3
+cssbeautifier==1.15.1
+jsbeautifier==1.15.1
+pygame==2.6.1
+Pygments==2.18.0
+python_magic==0.4.27
+python_minifier==2.11.2
+sqlparse==0.5.2
+windows-curses==2.4.0
