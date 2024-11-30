@@ -8,4 +8,3 @@ Pygments==2.18.0
 python_magic==0.4.27
 python_minifier==2.11.2
 sqlparse==0.5.2
-windows-curses==2.4.0
