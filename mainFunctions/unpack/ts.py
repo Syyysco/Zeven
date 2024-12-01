@@ -36,8 +36,8 @@ class VersatileTypeScriptFormatter(TypeScriptFormatter):
         """
         Improved preprocessing to expand compact TypeScript code for better formatting.
         """
-        code = re.sub(r'([{}()[\],=<>+\-*/&|!:])([^\s])', r'\1 \2', code)
-        code = re.sub(r'([^\s])([{}()[\],=<>+\-*/&|!:])', r'\1 \2', code)
+        code = re.sub(r'([{}()[\]\-*/&|!:])([^\s])', r'\1 \2', code)
+        code = re.sub(r'([^\s])([{}()[\]\-*/&|!:])', r'\1 \2', code)
         
         # Remove spaces before semicolons
         code = re.sub(r'\s+;', ';', code)
