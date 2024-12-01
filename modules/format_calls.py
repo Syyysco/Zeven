@@ -46,6 +46,9 @@ FORMAT_LIST = (mimeTypes.HTML[0],           #CONTROL: Allowed formats will be ca
                )
 
 BETA_LIST = (                             # List of languages ​​in development to prevent possible errors in formatting and compaction
+    mimeTypes.TYPESCRIPT[0],
+    mimeTypes.TYPESCRIPT[1],
+    mimeTypes.TYPESCRIPT[2],
     mimeTypes.PYTHON[0],
     mimeTypes.PYTHON[1],
     mimeTypes.PYTHON[2],
