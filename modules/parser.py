@@ -73,7 +73,7 @@ def parse_arguments():
     parser = customParser(description="Tool to save space in files of any programming language.")
     req_args = parser.add_mutually_exclusive_group(required=True) 
     req_args.add_argument('-H', '--fullhelp', action='store_true', help='Show the full help panel')
-    req_args.add_argument('-U', '--update', help='Update')
+    req_args.add_argument('-U', '--update', action='store_true', help='Update')
     req_args.add_argument('-C', action='store_true', help='Launch a configuration mode')
     req_args.add_argument('--version', action='store_true', help='Print the app version')
     req_args.add_argument('--reconfigure', action='store_true', help='Restore default configuration')
