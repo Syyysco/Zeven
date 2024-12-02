@@ -204,7 +204,7 @@ Remember to report any bugs, or suggest any changes or additions in the <a href=
 4. To **change the value** of any setting press `ENTER`:
  - If the setting is **ON/OFF** it will simply be changed.
  - If the setting is a **number** or a text field you will enter editing mode.
->[!tip]
+>[!NOTE]
 > __To edit values:__
 > - For numeric values ​​you can increase or decrease the value with `up-down` **arrow keys**.
 > - For text input just type (the help panel will open which is where the typed text is displayed).
