@@ -9,14 +9,6 @@
 </p>
 
 <p align="center">
-  [English]
-  [<a href="doc/README-zh.md">中文</a>]
-  [<a href="doc/README-ja.md">日本語</a>]
-  [<a href="doc/README-ko.md">한국어</a>]
-  [<a href="doc/README-ru.md">Русский</a>]<br><br>
-
-</p>
-<p align="center">
   <a href="#key-features-and-overview">Key features and overview</a><br>
   <a href="#installation-for-windows">Installation for Windows</a><br>
   <a href="#installation-for-linux-and-macos">Installation for Linux and MacOS</a><br>
@@ -29,7 +21,7 @@
   <a href="#possible-errors">Possible errors</a><br>
   <a href="#project-goals-and-future-ideas">Project goals and future ideas</a><br>
   <a href="LICENSE">License</a><br><br><br><br>
-  <img src="src/doc/profile_banner.png" width="100" alt="Sysco - A mad hardcoder"><br>
+  <img src="src/doc/profile-banner.png" width="100" alt="Sysco - A mad hardcoder"><br>
 </p><br>
 
 ---
@@ -55,8 +47,8 @@
 <br>
 
 # Install
-> ## IMPORTANT NOTE!
-> Do not clone the repository or run the tool as root or administrator user, it will fail when running..
+>[!IMPORTANT]
+> Do not clone the repository or run the tool as root or administrator user, it will fail when running.
 
  
 - As a first step it is important to emphasize that you need to have **git installed**, you can install it from <a href="https://git-scm.com/downloads">here</a>. After that you simply have to clone this repository:
@@ -105,8 +97,8 @@ Remember to report any bugs, or suggest any changes or additions in the <a href=
 <br>
 
 ## How To Use
-> **IMPORTANT NOTE**
->
+
+>[!NOTE]
 > - If you have not added Zeven to the PATH, the execution will be as follows: `python3 zeven.py <options> <args>`
 > - In this case, the use cases will be represented assuming that it was added to the PATH: `zeven <options> <args>`
 ### With Folders
@@ -210,6 +202,7 @@ Remember to report any bugs, or suggest any changes or additions in the <a href=
 4. To **change the value** of any setting press `ENTER`:
  - If the setting is **ON/OFF** it will simply be changed.
  - If the setting is a **number** or a text field you will enter editing mode.
+>[!tip] To edit values
 > - For numeric values ​​you can increase or decrease the value with `up-down` **arrow keys**.
 > - For text input just type (the help panel will open which is where the typed text is displayed).
 > - Then simply press `ENTER` to **save** the changes or `ESC` to **cancel**.
@@ -421,6 +414,7 @@ pip3 install windows-curses
 #### The idea for the future of this project is mainly that it ends up being a tool contained within a pentesting suite.
 
 - Why?
+  
 It is actually very easy to borrow the source code in production but normally developers compact it to save space and it ends up being unintelligible, in that case Zeven is a good tool for analysis.
 
 When it comes to compacting code it is also useful for the same reason, making readability difficult. The idea is to soon implement a group of modules to obfuscate the code and be able to bypass certain filters, detection systems in code injections, etc.
@@ -430,13 +424,17 @@ In conclusion this is the beginning of a great cybersecurity project!
 <br>
 
 ## License
-This project is licensed under the GPL License - see the <a href="LICENSE">LICENSE</a> file for details.
+`zeven` is made available under the terms of either the [GNU General Public License (GPL)](LICENSE).  
+You are free to use, modify, and distribute this project, provided you comply with the terms of the license.  
+The full license details are available in the [LICENSE](LICENSE) file.
 
-<br>
+For more information about the GPL License, visit the [official GNU website](https://www.gnu.org/licenses/gpl-3.0.en.html).
+
 <br>
 
 ---
 
+<br>
 <br>
 
 <p align="center">
