@@ -35,6 +35,8 @@ def first_check() -> str:
         from .backup_handler import restore_initial_config_backup
         restore_initial_config_backup()
         set_json_value(option='first_check', value=1)
+        return True
+    return False
 
 def check_if_configuration_exists() -> str:
     '''

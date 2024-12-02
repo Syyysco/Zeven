@@ -66,7 +66,7 @@ from modules.config_handler import (check_if_configuration_exists,
                                     check_if_jsonconfig_exists,
                                     check_configuration_integrity,
                                     first_check)
-first_check()
+FIRST_CHECK = first_check()
 CONF_JSON_EXIST = check_if_jsonconfig_exists()
 CONFIGURATION_EXIST = check_if_configuration_exists()
 INTEGRITY_CONFIG_CHECK_FAIL = check_configuration_integrity()
@@ -147,7 +147,7 @@ def init() -> None:
         if CONF_JSON_EXIST[0] == 'ERROR': FAIL(str=CONF_JSON_EXIST[1], start='\n', debugID='F012') 
         elif DEBUG_MODE and CONF_JSON_EXIST[0] == 'WARNING': WARNING(str=CONF_JSON_EXIST[1], start='\n', debugID='W002')
         
-        if INTEGRITY_CONFIG_CHECK_FAIL: FAIL(str=INTEGRITY_CONFIG_CHECK_FAIL, start='\n', debugID='F011')
+        if not FIRST_CHECK and INTEGRITY_CONFIG_CHECK_FAIL: FAIL(str=INTEGRITY_CONFIG_CHECK_FAIL, start='\n', debugID='F011')
         
     def check_special_parameters() -> None:
         if args.C:
