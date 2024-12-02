@@ -17,7 +17,7 @@ and updating Zeven from the official Github repository
 '''
 import requests
 
-def update_zeven():
+def update_zeven(new_version):
     # Testing 0001
     try:
         return 'COMPLETED', f'Zeven updated to v{new_version}'

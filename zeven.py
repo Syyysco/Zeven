@@ -166,8 +166,8 @@ def init() -> None:
         elif args.update: 
             from modules.updater import check_update
             update_response = check_update()
-            if update_response[0] == 'ERROR': ERROR(str=update_response[1], start='\n', debugID='E022')
-            elif update_response[0] == 'OK': OUTLOG(str=update_response[1], vlevel=1, start='\n'); sys.exit(0)
+            if update_response[0] == 'ERROR': FAIL(str=update_response[1], start='\n', debugID='F016')
+            elif update_response[0] == 'OK': OUTLOG(str=f'{Colors.OKCYAN}ALREADY UPDATED -> {Colors.END}{update_response[1]}', vlevel=1, start='\n'); sys.exit(0)
             elif update_response[0] == 'COMPLETED': OUTLOG(str=f'{Colors.OKCYAN}UPDATE COMPLETE -> {Colors.END}{update_response[1]}', vlevel=1, start='\n'); sys.exit(0)
 
             
