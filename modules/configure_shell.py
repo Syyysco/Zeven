@@ -63,7 +63,7 @@ Default Path: {os.path.abspath(DEFAULT_BACKUP_PATH)}""",
 
 """You can set the maximum number of backups to be stored in the designated path
 before older backups start being deleted. However, you can manually delete 
-all backups using the -F or --flushbackups parameter.""",
+all backups using the --flushbackups parameter.""",
 
 f"""By default, backups are stored in the default path, but you can change this 
 to a custom folder on your device. If the folder becomes inaccessible at any point,
