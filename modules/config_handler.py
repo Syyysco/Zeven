@@ -30,6 +30,12 @@ try:
 except Exception:
     pass
 
+def first_check() -> str:
+    if get_json_value(option='first_check') == 0:
+        from .backup_handler import restore_initial_config_backup
+        restore_initial_config_backup()
+        set_json_value(option='first_check', value=1)
+
 def check_if_configuration_exists() -> str:
     '''
     Checks if the configuration (config.ini) file exists and if not, creates it again in the default path

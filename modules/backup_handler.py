@@ -54,6 +54,7 @@ CONFIG_JSON_BACKUP = {
     'app_name': 'zeven',
     'version': f'{VERSION}',
     'config_hash': '',
+    'first_check': 0,
 }
 
 def restore_initial_config_backup() -> None:

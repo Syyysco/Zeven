@@ -64,7 +64,9 @@ Date: October 2024
 import sys, importlib, os, mimetypes, time
 from modules.config_handler import (check_if_configuration_exists,
                                     check_if_jsonconfig_exists,
-                                    check_configuration_integrity)
+                                    check_configuration_integrity,
+                                    first_check)
+first_check()
 CONF_JSON_EXIST = check_if_jsonconfig_exists()
 CONFIGURATION_EXIST = check_if_configuration_exists()
 INTEGRITY_CONFIG_CHECK_FAIL = check_configuration_integrity()
