@@ -164,7 +164,7 @@ def init() -> None:
                 FAIL(str='Aborted, changes were not saved', start='\n', debugID='F010') 
         
         elif args.update: 
-            from .modules.updater import check_update
+            from modules.updater import check_update
             update_response = check_update()
             if update_response[0] == 'ERROR': ERROR(str=update_response[1], start='\n', debugID='E022')
             elif update_response[0] == 'OK': OUTLOG(str=update_response[1], vlevel=1, start='\n')
