@@ -30,7 +30,13 @@
 
 
 # Key Features and Overview
-**Zeven** is a command-line tool designed to efficiently format and/or compact code, making it more readable and maintainable, or alternatively reducing its size and processing time.
+**`Zeven`** is a command-line tool designed to efficiently format and/or compact code, making it more readable and maintainable, or alternatively reducing its size and processing time.<br><br>
+<img src="src/doc/screenshots/banner-overview.png" alt="litle-overview">
+
+>[!tip]
+> Designed as an open-source project, focused on optimization and accessibility for developers and teams.
+> 
+> 100% Built with Python
 
 - Compatible with Windows, Linux, and macOS
 - Supports multiple specific formats
@@ -39,10 +45,6 @@
 - Parallel execution with threads to maximize performance
 - Includes an interactive configuration mode for ease of use
 - Particularly useful for web projects
-
-> Designed as an open-source project, focused on optimization and accessibility for developers and teams.
-> 
-> 100% Built with Python
 
 <br>
 
@@ -72,7 +74,7 @@
 2. If you installed a version later than or equal to python3.4, pip will already be installed by default (it will be necessary for this step), if you have another version you can install pip very easily with <a href="https://phoenixnap.com/kb/install-pip-windows">this guide</a> (two steps).
 In case **pip is installed** (check it with `pip --version`), you can continue **installing the requirements** for windows with this command:
    ```powershell
-   pip install win-requirements.txt
+   pip install -r win-requirements.txt
    ```
 3. And that's it! Now if you want to be able to run it without having to indicate the absolute path and/or put python3 in each command you can **add it to the system PATH or create an alias**.
 Remember to report any bugs, or suggest any changes or additions in the <a href="https://github.com/Syyysco/Zeven/issues">issues</a> section.
@@ -89,7 +91,7 @@ Remember to report any bugs, or suggest any changes or additions in the <a href=
 2. If you installed a version later than or equal to python3.4, pip will already be installed by default (it will be necessary for this step), if you have another version you can install pip very easily with <a href="https://robots.uc3m.es/installation-guides/install-pip.html">this guide</a> (one step).
 In case **pip is installed** (check it with `pip3 --version`), you can continue **installing the requirements** with this command:
    ```bash
-   pip3 install requirements.txt
+   pip3 install -r requirements.txt
    ```
 3. And that's it! Now if you want to be able to run it without having to indicate the absolute path and/or put python3 in each command you can **add it to the system PATH or create an alias**.
 Remember to report any bugs, or suggest any changes or additions in the <a href="https://github.com/Syyysco/Zeven/issues">issues</a> section.
@@ -202,7 +204,8 @@ Remember to report any bugs, or suggest any changes or additions in the <a href=
 4. To **change the value** of any setting press `ENTER`:
  - If the setting is **ON/OFF** it will simply be changed.
  - If the setting is a **number** or a text field you will enter editing mode.
->[!tip] To edit values
+>[!tip]
+> __To edit values:__
 > - For numeric values ​​you can increase or decrease the value with `up-down` **arrow keys**.
 > - For text input just type (the help panel will open which is where the typed text is displayed).
 > - Then simply press `ENTER` to **save** the changes or `ESC` to **cancel**.
