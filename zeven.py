@@ -137,7 +137,7 @@ def init() -> None:
         if not DEBUG_MODE: debugID = ''
         if VERBOSITY_LEVEL >= 4: print(f'{start}{Colors.WARNING}WARNING -> {Colors.END}{str}\t{Colors.WARNING}{debugID}{Colors.END}')
     
-    def OUTLOG(str: str, vlevel: int = -1, debug: bool = False, start: str='') -> None:
+    def OUTLOG(str: str, vlevel: int = 10, debug: bool = False, start: str='') -> None:
         if (debug and DEBUG_MODE) or vlevel <= VERBOSITY_LEVEL: print(f'{start}{str}')
     
     def check_configurations() -> None:
