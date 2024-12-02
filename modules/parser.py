@@ -27,7 +27,7 @@ class customParser(ArgumentParser):
     def format_help(self):
         super().format_help()
         return f'''
-{APPNAME.capitalize()} v{VERSION} by Annoder Labs™ {Colors.GRAY}\thttps://github.com/Syyysco/{APPNAME.capitalize()}{Colors.END}
+{APPNAME.capitalize()} v{VERSION} by Sysco Labs™ {Colors.GRAY}\thttps://github.com/Syyysco/{APPNAME.capitalize()}{Colors.END}
 ____________________________
     
 USAGE: {Colors.OKCYAN}{APPNAME}{Colors.END} [{Colors.ARG}-h{Colors.END}] [{Colors.ARG}-H{Colors.END}] [{Colors.ARG}-C{Colors.END}] [{Colors.ARG}-U{Colors.END}] [{Colors.ARG}--version{Colors.END}] [{Colors.ARG}--flush-backups{Colors.END}] [{Colors.ARG}--reconfigure{Colors.END}] |
