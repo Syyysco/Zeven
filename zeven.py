@@ -150,6 +150,9 @@ def init() -> None:
         if not FIRST_CHECK and INTEGRITY_CONFIG_CHECK_FAIL: FAIL(str=INTEGRITY_CONFIG_CHECK_FAIL, start='\n', debugID='F011')
         
     def check_special_parameters() -> None:
+        '''
+        Control special parameters that cannot be interpreted after the others
+        '''
         if args.C:
             try:
                 from modules.configure_shell import init_configuration_shell
@@ -160,7 +163,13 @@ def init() -> None:
             except KeyboardInterrupt:
                 FAIL(str='Aborted, changes were not saved', start='\n', debugID='F010') 
         
-        elif args.update: pass
+        elif args.update: 
+            from .modules.updater import check_update
+            update_response = check_update()
+            if update_response[0] == 'ERROR': ERROR(str=update_response[1], start='\n', debugID='E022')
+            elif update_response[0] == 'OK': OUTLOG(str=update_response[1], vlevel=1, start='\n')
+            elif update_response[0] == 'COMPLETED': OUTLOG(str=f'{Colors.OKCYAN}UPDATE COMPLETE -> {Colors.END}{update_response[1]}', vlevel=1, start='\n')
+            
         
         elif args.version: from modules.help import VERSION_OUTPUT; print(VERSION_OUTPUT); sys.exit(0)
         
