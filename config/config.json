@@ -1,5 +1,6 @@
 {
     "app_name": "zeven",
     "version": "1.0",
-    "config_hash": "3213ff96d64e93d6f4cab4ae0a911da8"
+    "config_hash": "3213ff96d64e93d6f4cab4ae0a911da8",
+    "first_check": 0
 }
