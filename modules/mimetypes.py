@@ -27,9 +27,9 @@ class mimeTypes:
     CSS = ('css', 'text/css')
     JAVASCRIPT = ('js', 'mjs', 'application/javascript', 'javascript')
     JSON = ('json', 'jsonld', 'application/json', 'application/ld+json')
-    TYPESCRIPT = ('ts', 'text/vnd.trolltech.linguist', 'typescript')
     PHP = ('php', 'application/x-httpd-php')
     #-----------------------------------    BETA      -----------------------
+    TYPESCRIPT = ('ts', 'text/vnd.trolltech.linguist', 'typescript')
     PYTHON = ('py', 'pyz', 'pyc', 'pyo', 'pyw','text/x-python', 'python')
     SQL = ('sql', 'application/octet-stream', 'application/sql')
     
