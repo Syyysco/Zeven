@@ -20,7 +20,7 @@ class TypeScriptFormatter:
     def __init__(self, indent_size: int = 4):
         """
         Initialize the TypeScript formatter.
-        
+
         Args:
             indent_size (int): Number of spaces for each indentation level
         """
@@ -31,44 +31,57 @@ class VersatileTypeScriptFormatter(TypeScriptFormatter):
     """
     Final and versatile TypeScript formatter capable of handling various scenarios.
     """
-    
+
     def _advanced_preprocess(self, code: str) -> str:
         """
         Improved preprocessing to expand compact TypeScript code for better formatting.
         """
+
+        '''def handle_dict_commas(match):
+            block = match.group(0)
+            # Add indentation for lines following a comma
+            return re.sub(r',\s*', ',\n' + ' ' * self.indent_size, block)'''
+
         code = re.sub(r'([{}()[\]\-*/&|!:])([^\s])', r'\1 \2', code)
         code = re.sub(r'([^\s])([{}()[\]\-*/&|!:])', r'\1 \2', code)
-        
+
         # Remove spaces before semicolons
         code = re.sub(r'\s+;', ';', code)
-        
-        # Add newlines after semicolons and around braces
+
+        # Add newlines after commas, semicolons and around braces
+        #code = re.sub(r',\s*', ',\n', code)
+
         code = re.sub(r';\s*', ';\n', code)
         code = re.sub(r'([^\s])\{', r'\1\n{', code)
         code = re.sub(r'\}([^\s])', r'}\n\1', code)
-        
+
         # Normalize arrow functions
         code = re.sub(r'=>\s*', '=> ', code)
-        
+
         # Handle edge cases in nested blocks
-        code = re.sub(r'\{\s+', '{\n', code)
-        code = re.sub(r'\s+\}', '\n}', code)
+        code = re.sub(r'\{\s+', r'{\n', code)
+        code = re.sub(r'\s+\}', r'\n}\n', code)
+        # Ensure a blank line after '}'
+        code = re.sub(r'\}\s*', r'}\n\n', code)
         
+        '''code = re.sub(r'\{[^{}]*?\}', handle_dict_commas, code)
+        code = re.sub(r'^ (\S.*)', r'\1', code, flags=re.MULTILINE)'''
+
         return code
-    
+
     def _tokenize_code(self, code: str) -> list:
         """
         Tokenize the code into manageable chunks for formatting.
-        
+
         Args:
             code (str): TypeScript code to tokenize
-            
+
         Returns:
             list: Tokens of code
         """
         # Tokenize preserving structure
-        
-        return [line.strip() for line in code.split('\n') if line.strip()]
+
+        return [line for line in code.split('\n') if line.strip()]
 
 
     def _format_block(self, tokens: list) -> str:
@@ -99,6 +112,6 @@ class VersatileTypeScriptFormatter(TypeScriptFormatter):
 
 
 def init(input_file: str, indent: int = 4) -> str:
-    versatile_formatter = VersatileTypeScriptFormatter(indent)
+    versatile_formatter = VersatileTypeScriptFormatter(max(2, indent))
     formatted_result = versatile_formatter.format_typescript(input_file)
     return formatted_result
