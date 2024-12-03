@@ -195,7 +195,7 @@ Remember to report any bugs, or suggest any changes or additions in the <a href=
 ## Using Setting Mode
 > In configuration mode you can change certain relevant settings regarding operation, information display and other aspects.
 
-1. You will find **two panels at the top**, *configuration* on the left and **customization** on the right.
+1. You will find **two panels at the top**, **configuration** on the left and **customization** on the right.
   
 2. You can **switch panels** with the `left` and `right` **arrow keys**, and switch between their options with the `up` and `down` **arrow keys or the mouse wheel**.
 
@@ -401,7 +401,7 @@ hint: See PEP 668 for the detailed specification.
 
 ---
 
-### Error installing requirements
+### Error installing requirements on Windows
 ```powershell
 ERROR: Could not find a version that satisfies the requirement windows-curses==2.4.0 (from versions: none)
 ERROR: No matching distribution found for windows-curses==2.4.0
