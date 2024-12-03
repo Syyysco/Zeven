@@ -16,6 +16,7 @@ This module contains the executable for the interactive configuration mode.
 """
 
 import curses, os
+from typing import Union
 from copy import deepcopy
 from .settings import *
 from .backup_handler import BACKUP_PATH as DEFAULT_BACKUP_PATH
@@ -118,10 +119,9 @@ error itself will be displayed.""",
     return bottom_help_configuration_text, bottom_help_customization_text
 
 
-shell = ''     # Shell
-config_updates = []
-SAVED_CONFIGURE_SETTINGS = (SKIP_MISSARGS, 
-                            OVERWRITEDIR_LOCK, 
+shell = ''                                              # Here you will define the type of shell/operating system
+SAVED_CONFIGURE_SETTINGS = (SKIP_MISSARGS,              # This tuple will be linked to the variable current_configuration_index and constant CONFIGURATION_VARS and contains the values ​​currently set in the configuration
+                            OVERWRITEDIR_LOCK,
                             DEBUG_MODE, BETA_LANGS, 
                             VERBOSITY_LEVEL, 
                             MAKE_PROJECT_BACKUPS, 
@@ -129,7 +129,7 @@ SAVED_CONFIGURE_SETTINGS = (SKIP_MISSARGS,
                             BACKUP_PATH,
                             USE_THREADS,
                             MAX_THREADS)
-SAVED_CUSTOMIZE_SETTINGS = (SHOW_PROGRESSBAR, 
+SAVED_CUSTOMIZE_SETTINGS = (SHOW_PROGRESSBAR,           # This tuple will be linked to the variable current_customization_index and constant CUSTOMIZATION_VARS and contains the values ​​currently set in the customization
                             COLOR_HIGHLIGHTING, 
                             SOUNDS, 
                             NOTIFICATION_AT_END, 
@@ -137,7 +137,7 @@ SAVED_CUSTOMIZE_SETTINGS = (SHOW_PROGRESSBAR,
                             ERROR_NOTIFICATION, 
                             SUCCESS_NOTIFICATION, 
                             HELP_ON_ARGERRORS)
-DEFAULT_CONFIGURATION = {
+DEFAULT_CONFIGURATION = {                               # This dictionary contains the factory settings for the configuration.
     "Skip Invalid Parameters": False,
     "Directory Overwrite Lock": True,
     "Debug Mode": False,
@@ -157,7 +157,7 @@ DEFAULT_CONFIGURATION = {
     "Success Notification":  3,
     "Help on Parameter Errors": True
 }
-CONFIGURATION_VARS = (
+CONFIGURATION_VARS = (                                  # This tuple will be linked to the variable current_configuration_index to detect the active variable in the configuration panel
     "Skip Invalid Parameters", 
     "Directory Overwrite Lock", 
     "Debug Mode", 
@@ -169,7 +169,7 @@ CONFIGURATION_VARS = (
     "Use Threads",
     "Maximum Threads"
 )
-CUSTOMIZATION_VARS = (
+CUSTOMIZATION_VARS = (                                  # This tuple will be linked to the variable current_customization_index to detect the active variable in the customization panel
     "Shows Progress Bar", 
     "Color Highlighting", 
     "Sounds", 
@@ -179,7 +179,7 @@ CUSTOMIZATION_VARS = (
     "Success Notification", 
     "Help on Parameter Errors"
 )
-current_configuration = {
+current_configuration = {                               # Dictionary that holds the keys and values ​​of the user configuration. This dictionary will be modified at each setting.
     "Skip Invalid Parameters": SKIP_MISSARGS,
     "Directory Overwrite Lock": OVERWRITEDIR_LOCK,
     "Debug Mode": DEBUG_MODE,
@@ -199,8 +199,8 @@ current_configuration = {
     "Success Notification":  SUCCESS_NOTIFICATION,
     "Help on Parameter Errors": HELP_ON_ARGERRORS
 }
-CURRENT_CONFIGURATION_BACKUP = deepcopy(current_configuration)
-HANGSFROM_RELATIONSHIPS = {
+CURRENT_CONFIGURATION_BACKUP = deepcopy(current_configuration) # This dictionary saves a backup copy of the current configuration (only at the start of the script) and is used to check whether there are differences or not between it and the dictionary that saves the modifications (current_configuration) and to know if any changes were made.
+HANGSFROM_RELATIONSHIPS = {                                    # Contains the relationships that some settings have with others and checks if the state of a variable depends on the state of others.
     'Maximum Backups': 'Create Project Backups',
     'Backup Folder': 'Create Project Backups',
     'Maximum Threads': 'Use Threads',
@@ -209,7 +209,7 @@ HANGSFROM_RELATIONSHIPS = {
     'Error Notification': 'Completion Notification',
     'Success Notification': 'Completion Notification'
 }
-ACTION_TYPES = {
+ACTION_TYPES = {                                               # Contains the action types of each variable
     "Skip Invalid Parameters": 'turn',
     "Directory Overwrite Lock": 'turn',
     "Debug Mode": 'turn',
@@ -230,7 +230,7 @@ ACTION_TYPES = {
     "Help on Parameter Errors": 'turn'
 }
 
-KEY_TYPES_FILTER = {
+KEY_TYPES_FILTER = {                                          # Contains the value types of each variable
     "Skip Invalid Parameters": bool,
     "Directory Overwrite Lock": bool,
     "Debug Mode": bool,
@@ -250,14 +250,11 @@ KEY_TYPES_FILTER = {
     "Success Notification":  int,
     "Help on Parameter Errors": bool
 }
-bottom_help_configuration_text = generate_dynamic_helps()[0]
-bottom_help_customization_text = generate_dynamic_helps()[1]
+bottom_help_configuration_text = generate_dynamic_helps()[0]  # Variable that stores the corresponding "configuration" text based on current_configuration_index
+bottom_help_customization_text = generate_dynamic_helps()[1]  # Variable that stores the corresponding "customization" text based on current_customization_index
 
-main_keys_help_text = "[Q] Exit       [ESC] Cancel       [H] Help       [ENTER] Modify       [R] Reset"
-footer_text = main_keys_help_text
-#help_option_text = ""
-
-
+main_keys_help_text = "[Q] Exit       [ESC] Cancel       [H] Help       [ENTER] Modify       [R] Reset"  # Initial footer text
+footer_text = main_keys_help_text   # Variable that stores the footer text (will change depending on the mode)
 
 on_chars = (
     '███████████  █████    ██',
@@ -341,7 +338,7 @@ nine_chars = (
     '      ██',)
 
 
-char_sets = {
+char_sets = {                                     # Simple dictionary of connection between numeric values, boolean values ​​or error states with the corresponding charsets
     'True': on_chars,
     'False': off_chars,
     'ERROR': error_chars,
@@ -357,79 +354,104 @@ char_sets = {
     9: nine_chars,
 }
 
-# Variables globales para el estado
-show_help_panel = False
-has_hide_before = False
-dynamic_num_var_left = False
-dynamic_num_var_right = False
-colors_has_changed = False
-last_check_panel = False
-not_help_possible = False
-current_configuration_index = 0
-current_customization_index = 0
-current_panel = "left"
+show_help_panel = False           # Variable that stores the state (shown or hidden) of the help panel
+has_hide_before = False           # This variable will be True if the terminal is too small to display the global panel.
+dynamic_num_var_left = False      # Variables to generate 
+dynamic_num_var_right = False     # the movement of the "gear"
+colors_has_changed = False        # Value that checks if the user changed the colors (to call the redraw function only when necessary)
+last_check_panel = False          # Variable to save if the help panel was hidden due to lack of size
+not_help_possible = False         # This variable will be True when the terminal is too small to display the help panel and will be temporarily closed (it will be reopened when there is space)
+current_configuration_index = 0   # Current index in the configuration panel (CONFIGURATION_VARS)
+current_customization_index = 0   # Current index in the customization panel (CUSTOMIZATION_VARS)
+current_panel = "left"            # Current panel selected
 
-TOP_MARGIN = 2
-BOTTOM_MARGIN = 2
+TOP_MARGIN = 2                    # Top margin rows
+BOTTOM_MARGIN = 2                 # Bottom margin rows
 
-def generate_dict_to_save_changes(config_dict=CONFIGURATION_VARS, custom_dict=CUSTOMIZATION_VARS, combinate_dict=current_configuration) -> dict[str, dict]:
+
+def generate_dict_to_save_changes(config_dict: tuple = CONFIGURATION_VARS, custom_dict: tuple = CUSTOMIZATION_VARS, combinate_dict: dict = current_configuration) -> dict[str, dict]:
+    '''
+    Returns a dictionary divided into two sections: Settings and Customization.
+    Ready to be sent to the configuration file `config.ini`
+    
+    :param config_dict (tuple): Configuration tuple
+    :param custom_dict (tuple): Customization tuple
+    :param combinated_dict (dict): Currents settings combinating both panels
+    :return (dict): Dictionary organized into sections
+
+    '''
     final_dict = {'Settings': {}, 'Customize': {}}
     
     for key in combinate_dict.keys():
-        ini_var_name = key.lower().replace(' ', '_')  # Cambia el nombre según el diccionario de nombres amigables
+        ini_var_name = key.lower().replace(' ', '_') 
         
         if key in config_dict: final_dict['Settings'][ini_var_name] = combinate_dict[key]
         elif key in custom_dict: final_dict['Customize'][ini_var_name] = combinate_dict[key]
 
     return final_dict
 
-def save_changes_on_ini(dict: dict):
+
+def save_changes_on_ini(dict: dict) -> None:
+    '''
+    Final step to save changes on `config.ini` file before exit
+    
+    :param dict (dict): The dictionary generated in the `generate_dict_to_save_changes` function
+    '''
     for section, keys in dict.items():
         for key, value in keys.items():
             set_value(section=section, option=key, value=value)
 
-def combine_ascii_numbers(number, char_sets):
-    """
-    Combina las tuplas de caracteres ASCII de varios dígitos en una sola tupla para representar el número completo.
 
-    :param number: Número entero que se quiere representar (ej. 101).
-    :param char_sets: Diccionario con las tuplas ASCII para cada dígito.
-    :return: Una tupla con las líneas combinadas para representar el número completo.
+def combine_ascii_numbers(number: int, char_sets: dict) -> tuple:
     """
-    # Convertir el número a una cadena para iterar sobre sus dígitos
-    digits = str(number)
-    
-    # Inicializar una lista vacía para las líneas combinadas
+    Combines multi-digit ASCII character tuples into a single tuple to represent the complete number.
+
+    :param number: Integer to be represented (eg. 101).
+    :param char_sets: Dictionary with ASCII tuples for each digit.
+    :return: A tuple with the lines combined to represent the entire number.
+    """
+    digits = str(number)    
     combined_lines = [""] * len(next(iter(char_sets.values())))  # Asume que todas las tuplas tienen la misma longitud
 
-    # Recorrer cada dígito del número
     for digit in digits:
-        # Obtener la representación ASCII del dígito
         ascii_digit = char_sets[int(digit)]
-        
-        # Combinar las líneas con dos espacios de separación
+        # Combine lines with two spaces separating them
         for i, line in enumerate(ascii_digit):
             combined_lines[i] += line + "  "
 
-    # Eliminar el espacio adicional al final de cada línea
+    # Delete the two spaces to the right of the last digit
     combined_lines = tuple(line[:-2] for line in combined_lines)
 
     return combined_lines
 
+
 def get_current_help_option_value() -> str:
+    '''
+    Function to generate the help panel text dynamically
+    '''
     current_index = current_configuration_index if current_panel == 'left' else current_customization_index
     bottom_help_text = bottom_help_configuration_text if current_panel == 'left' else bottom_help_customization_text
     help_text = bottom_help_text[current_index % len(bottom_help_text)]
     
     return help_text
 
-def get_current_key(convert_ini_to_var: bool=False) -> str:
+
+def get_current_key(convert_ini_to_var: bool = False) -> str:
+    '''
+    Function that returns the value of the currently selected variable
+    
+    :param convert_ini_to_var (bool): If this value is True, the string will be converted to lowercase and spaces will be replaced with "_" (underscores). Format of the `config.ini` file
+    '''
     current_key = CONFIGURATION_VARS[current_configuration_index] if current_panel == 'left' else CUSTOMIZATION_VARS[current_customization_index]
     if convert_ini_to_var: current_key = current_key.lower().replace(' ', '_')
     
     return current_key
 
+
 def get_current_char_value() -> tuple:
+    '''
+    Returns the tuple corresponding to the value of the current key.
+    '''
     current_key = get_current_key()
     current_value = current_configuration.get(current_key)
     
@@ -438,17 +460,20 @@ def get_current_char_value() -> tuple:
     elif isinstance(current_value, str):
         current_char = char_sets.get(str(bool(current_value))) if current_value != 'ERROR' else char_sets.get(current_value)
     elif isinstance(current_value, int):
-        current_char = combine_ascii_numbers(current_value, char_sets)
+        current_char = combine_ascii_numbers(number=current_value, char_sets=char_sets)
     
     return current_char
 
-def action_logics(key, new_value, config=current_configuration, dependencies=HANGSFROM_RELATIONSHIPS, typelist=KEY_TYPES_FILTER):   
+
+def action_logics(key: str, new_value: Union[str, bool, int], config: dict = current_configuration, dependencies: dict = HANGSFROM_RELATIONSHIPS, typelist: dict = KEY_TYPES_FILTER) -> bool:   
+    '''
+    Checks if a variable has a correct type (int, bool, str) and if it can be set/changed based on its dependencies (dict: HANGSFROM_RELATIONSHIPS)
+    '''
     if key in dependencies:
         dependency_key = dependencies[key]
 
-        # Verificar si la dependencia está activa
         if not config.get(dependency_key, False):
-            return False  # Dependencia no satisfecha
+            return False
 
     if key in typelist:
         value_type = typelist[key]
@@ -467,15 +492,14 @@ def action_logics(key, new_value, config=current_configuration, dependencies=HAN
     
     return True
     
-def setup_colors():
+    
+def setup_colors() -> None:
     import platform
     global shell
-    """Configuración de colores personalizados"""
+    """Setting custom colors based on platform"""
     curses.start_color()
     curses.use_default_colors()
-    # Definir colores personalizados
     if current_configuration['Color Highlighting'] and curses.can_change_color():
-        
         def init_colors():
             curses.init_color(11, *custom_color_1)
             curses.init_color(12, *custom_color_2)
@@ -585,18 +609,31 @@ def setup_colors():
         curses.init_pair(98, curses.COLOR_WHITE, curses.COLOR_BLACK)   # V-Separator
         curses.init_pair(99, curses.COLOR_WHITE, curses.COLOR_BLACK)   # General
         shell = 'no-color'
-        
-def hex_to_rgb(hex_color):
+
+
+def hex_to_rgb(hex_color: str) -> tuple[int, int, int]:
+    '''
+    Convert HEX to RGB color
+    
+    :param hex_color (str): Color on hexadecimal, e.g. `#224646`
+    :return: A tuple like [255, 120, 33]
+    '''
     hex_color = hex_color.lstrip('#')
     r, g, b = tuple(int(hex_color[i:i + 2], 16) for i in (0, 2, 4))
     return int(r * 1000 / 255), int(g * 1000 / 255), int(b * 1000 / 255)
-      
-def draw_title(window, text, width, offset):
-    window.addstr(0, (width - len(text)) // 2 + offset, text, curses.A_BOLD)
 
-def draw_rotating_list(window, text_list, current_index, width, height, dynamic, panel):
-    """Dibuja una lista rotativa centrada verticalmente, con el elemento seleccionado siempre en el centro"""
-    #window.clear() -------------------------------------------
+def draw_rotating_list(window, text_list: tuple, current_index: int, width: int, height: int, dynamic: bool, panel: str) -> None:
+    """
+    Draws a vertically centered rotating list, with the selected item always in the center
+    
+    :param window: Window object of curses
+    :param text_list: tuple of element to show
+    :param current_index: Current index of selection on text_list
+    :param width: Width of the panel where the list will be displayed
+    :param height: Height of the panel where the list will be displayed
+    :param dynamic: Indicates whether the panel is active
+    :param panel: Indicates the panel from which the function is called
+    """
     half_height = height // 2
     list_length = len(text_list)
     list_length_up = list_length // 2
@@ -608,11 +645,11 @@ def draw_rotating_list(window, text_list, current_index, width, height, dynamic,
         list_index = (current_index + i) % list_length
         y_pos = half_height + i
         
-        # Asegurarse de que y_pos esté dentro del rango de la ventana
+        # Make sure y_pos is within the window range
         if y_pos < 0 or y_pos >= height or y_pos == 1: # REMOVE LINES OUT OF PANEL & FIRST LINE (for separation)
             continue
         
-        # Limitar el texto al ancho de la ventana
+        # Limit text to window width
         element = text_list[list_index][:width - 1]
         element_width = 26 if i % 2 == dynamic_num else 24
         side_offset_left = (element_width - len(element)) // 2
@@ -620,10 +657,10 @@ def draw_rotating_list(window, text_list, current_index, width, height, dynamic,
         display_text = f"    {' ' * side_offset_left}{element}{' ' * side_offset_right}    "
         if not dynamic_num_var: dynamic_spacer, dynamic_decorator = '', '███'
         else: dynamic_spacer, dynamic_decorator = ' ', '██' 
-
+        
         if i == 0:                                                 # CENTER
             display_text = f"{dynamic_decorator}{dynamic_spacer}    {' ' * (side_offset_left - 1 if dynamic else side_offset_left)}{element}{' ' * (side_offset_right - 1 if dynamic else side_offset_right)}    {dynamic_spacer}{dynamic_decorator}"
-            window.addstr(y_pos, max(0, (width - len(display_text)) // 2), display_text, curses.color_pair(43 if current_configuration[text_list[list_index]] else 47)) # curses.A_REVERSE |
+            window.addstr(y_pos, max(0, (width - len(display_text)) // 2), display_text, curses.color_pair(43 if current_configuration[text_list[list_index]] and action_logics(key=text_list[list_index], new_value=current_configuration[text_list[list_index]]) else 47)) # curses.A_REVERSE |
         elif y_pos == 2 or y_pos == half_height *2 -2:             # TOP & BOTTOM
             window.addstr(y_pos, max(0, (width - len(display_text)) // 2), display_text, curses.color_pair(44))
         elif y_pos == half_height *2 -1:                           # REMOVE LAST BOTTOM LINE
@@ -634,20 +671,19 @@ def draw_rotating_list(window, text_list, current_index, width, height, dynamic,
             window.addstr(y_pos, max(0, (width - len(display_text)) // 2), display_text, curses.color_pair(46))
     window.refresh()
 
-def draw_centered_text_in_panel(window, text=None, offset_y=0, offset_x=0, charset=None, multiline=False):
-    """Función para centrar texto tanto vertical como horizontalmente en un panel"""
 
-    #window.clear()  -----------------------------------------
-    
-    # Obtener dimensiones del panel
+def draw_centered_text_in_panel(window, text: str = None, offset_y: int = 0, offset_x: str = 0, charset: tuple = None, multiline: bool = False) -> None:
+    """
+    This function receives a single line, multiple lines, or a charset (tuple) text and centers it in the received panel.
+    """
     panel_height, panel_width = window.getmaxyx()
 
     if charset:
-        display_text = charset#on_chars if state == 'ON' else off_chars
+        display_text = charset
         ascii_height = len(display_text)
         centered_y = max(0, (panel_height - ascii_height) // 2 + offset_y)
 
-        # Dibujar cada línea ASCII centrada horizontalmente
+        # Draw each ASCII line centered horizontally
         for i, line in enumerate(display_text):
             centered_x = max(0, (panel_width - len(line)) // 2 + offset_x)
             # Asegurarse de no exceder los bordes del panel
@@ -659,25 +695,25 @@ def draw_centered_text_in_panel(window, text=None, offset_y=0, offset_x=0, chars
         total_text_height = len(lines)
         start_y = max(0, (panel_height - total_text_height) // 2 + offset_y)
 
-        # Dibujar cada línea centrada horizontalmente
+        # Draw each ASCII line centered horizontally
         for i, line in enumerate(lines):
             centered_x = max(0, (panel_width - len(line)) // 2 + offset_x)
             truncated_line = line[:panel_width - 1]  # Limitar para no exceder el ancho
             window.addstr(start_y + i, centered_x, truncated_line)
     
     else:
-        # Calcular posición centrada
         centered_y = max(0, (panel_height) // 2 + offset_y)             # V-CENTER  
         centered_x = max(0, (panel_width - len(text)) // 2 + offset_x)  # H-CENTER
-
-        # Limitar el texto para no exceder el ancho del panel
         display_text = text[:panel_width - 1]
 
-        # Añadir texto centrado
         window.addstr(centered_y, centered_x, display_text)
     window.refresh()
 
-def draw_screen(stdscr):
+
+def draw_screen(stdscr) -> None:
+    '''
+    Main function that is responsible for drawing all the panels and composes the entire visual layer
+    '''
     global show_help_panel, current_configuration_index, current_customization_index, current_panel, last_check_panel, not_help_possible, has_hide_before, colors_has_changed
 
     curses.curs_set(0)
@@ -686,7 +722,6 @@ def draw_screen(stdscr):
         colors_has_changed = False
     stdscr.bkgd(' ', curses.color_pair(99))
     stdscr.refresh()
-
 
     height, width = stdscr.getmaxyx() 
     
@@ -698,49 +733,43 @@ def draw_screen(stdscr):
             has_hide_before = False
             stdscr.clear()
             stdscr.refresh()
-        # Definir dimensiones de los paneles
+            
+        # Define main panel dimensions #########################################################
         title_panels_height = 3
         title_panels_width = 40
         panel_height = int(height * 0.6) - title_panels_height
         footer_height = 1
         bottom_panel_height = height - panel_height - (footer_height +1) - title_panels_height
         left_bottom_width = int(width * 0.8) - 1
+        
         if show_help_panel: right_bottom_width = max(30, width - left_bottom_width - 1)
         else: right_bottom_width = width - 2
-        ####
+    
         adjusted_panel_height = int(height * 0.6) - TOP_MARGIN - BOTTOM_MARGIN
         panel_height = max(5, adjusted_panel_height)
-        
-        
             
-        total_width = width - 2  # Restar 2 para los bordes laterales
-        left_width = total_width // 2  # La mitad del ancho total disponible
-        right_width = total_width - left_width  # Resto del ancho para la ventana derecha
+        #########################################################################################
+        
+        total_width = width - 2                  # Subtract 2 for the side edges
+        left_width = total_width // 2 
+        right_width = total_width - left_width
 
-        # Validar tamaño mínimo para los paneles
-        left_width = max(left_width, 5)  # Ancho mínimo de 5
-        right_width = max(right_width, 5)  # Ancho mínimo de 5
+        left_width = max(left_width, 5)  
+        right_width = max(right_width, 5)
 
-        # Ajustar posiciones y asegurar separación
-        left_window_start_x = 1  # Empieza después del borde izquierdo
-        right_window_start_x = left_window_start_x + left_width + 1  # Separador entre ventanas
+        left_window_start_x = 1  
+        right_window_start_x = left_window_start_x + left_width + 1  # Separator between windows
 
-        # Validar que right_window no exceda los límites
-        if right_window_start_x + right_width > width - 1:
-            # Ajustar dinámicamente
-            total_width = width - 3  # Menos un separador extra
+        if right_window_start_x + right_width > width - 1:            
+            total_width = width - 3 
             left_width = total_width // 2
             right_width = total_width - left_width
-
-            # Recalcular posiciones
             right_window_start_x = left_window_start_x + left_width + 1
         
-        
-        # Cálculo dinámico de posición horizontal para los títulos
         title_left_start_x = left_window_start_x + (left_width - title_panels_width) // 2
         title_right_start_x = right_window_start_x + (right_width - title_panels_width) // 2
 
-        # Crear las ventanas de título
+        # Create the windows #####################################################################
         title_left_window = curses.newwin(
             title_panels_height, title_panels_width,
             TOP_MARGIN,  # Siempre encima de los paneles principales
@@ -766,30 +795,51 @@ def draw_screen(stdscr):
             right_window_start_x
         )
         
-        left_bottom_window = curses.newwin(bottom_panel_height, left_bottom_width, panel_height + 1 + BOTTOM_MARGIN + title_panels_height, 1)
-        right_bottom_window = curses.newwin(bottom_panel_height, right_bottom_width if not show_help_panel else right_bottom_width -1, panel_height + 1 + BOTTOM_MARGIN + title_panels_height, left_bottom_width + 1 if show_help_panel else 1)
-        footer_window = curses.newwin(footer_height, width, height - footer_height, 0)
-
+        left_bottom_window = curses.newwin(bottom_panel_height, 
+                                           left_bottom_width, 
+                                           panel_height + 1 + BOTTOM_MARGIN + title_panels_height, 
+                                           1
+        )
         
-        # Dibujar los títulos en los paneles superiores
+        right_bottom_window = curses.newwin(bottom_panel_height, 
+                                            right_bottom_width if not show_help_panel else right_bottom_width -1, 
+                                            panel_height + 1 + BOTTOM_MARGIN + title_panels_height, 
+                                            left_bottom_width + 1 if show_help_panel else 1
+        )
+        
+        footer_window = curses.newwin(footer_height, 
+                                      width, 
+                                      height - footer_height, 
+                                      0
+        )
+
         title_left_window.bkgd(' ', curses.color_pair(1))
         title_right_window.bkgd(' ', curses.color_pair(1))
-        draw_centered_text_in_panel(title_left_window, "Configuration")
-        #stdscr.vline(0, width // 2, ' ', title_panels_height)
-        draw_centered_text_in_panel(title_right_window, "Customization")
         
-        # Dibujar los paneles superiores
+        draw_centered_text_in_panel(window=title_left_window,
+                                    text="Configuration")
+        draw_centered_text_in_panel(window=title_right_window,
+                                    text="Customization")
+        
         stdscr.hline(title_panels_height + 2, 0, ' ', width)
         
-        
         left_window.bkgd(' ', curses.color_pair(2 if current_panel == 'left' else 3))
-        draw_rotating_list(left_window, CONFIGURATION_VARS, current_configuration_index, width // 2, panel_height, dynamic=dynamic_num_var_left, panel='left')
+        draw_rotating_list(window=left_window, 
+                           text_list=CONFIGURATION_VARS, 
+                           current_index=current_configuration_index, 
+                           width=width // 2, 
+                           height=panel_height, 
+                           dynamic=dynamic_num_var_left, 
+                           panel='left')
+        
         right_window.bkgd(' ', curses.color_pair(3 if current_panel == 'left' else 2))
-        draw_rotating_list(right_window, CUSTOMIZATION_VARS, current_customization_index, width // 2, panel_height, dynamic=dynamic_num_var_right, panel='right')
-        
-        #stdscr.hline(panel_height + 3, 0, ' ', width)
-        #stdscr.hline(panel_height + 4, 0, ' ', width)
-        
+        draw_rotating_list(window=right_window, 
+                           text_list=CUSTOMIZATION_VARS, 
+                           current_index=current_customization_index, 
+                           width=width // 2, 
+                           height=panel_height, 
+                           dynamic=dynamic_num_var_right, 
+                           panel='right')       
         
         if width <= 144: 
             if show_help_panel: last_check_panel = True
@@ -801,28 +851,25 @@ def draw_screen(stdscr):
                 last_check_panel = False
             not_help_possible = False
             
-        # Dibujar los paneles inferiores
-        
+
         
         if show_help_panel:
             left_bottom_window.bkgd(' ', curses.color_pair(4))
-            draw_centered_text_in_panel(left_bottom_window, get_current_help_option_value(), offset_y=-1, multiline=True)
+            draw_centered_text_in_panel(window=left_bottom_window, text=get_current_help_option_value(), offset_y=-1, multiline=True)
             stdscr.vline(panel_height + 1 + BOTTOM_MARGIN + title_panels_height, left_bottom_width, ' ' if shell != 'wsl/win<10' and shell != 'no-color' else '-', bottom_panel_height - footer_height, curses.color_pair(98))
 
         right_bottom_window.bkgd(' ', curses.color_pair(5)) #! NOTA:   establecer colores de estado 
         if check_configuration_integrity(dict=generate_dict_to_save_changes(), single_key=get_current_key(convert_ini_to_var=True)): 
             current_charset = get_current_char_value() 
-            if current_charset == on_chars: pass # right_bottom_window.bkgd(' ', curses.color_pair(5))
-            elif current_charset == off_chars: pass # right_bottom_window.bkgd(' ', curses.color_pair(5))
-            else: pass # right_bottom_window.bkgd(' ', curses.color_pair(5))
+            '''if current_charset == on_chars: right_bottom_window.bkgd(' ', curses.color_pair(5))
+            elif current_charset == off_chars:  right_bottom_window.bkgd(' ', curses.color_pair(5))
+            else: right_bottom_window.bkgd(' ', curses.color_pair(5))'''
         else: 
             current_charset = error_chars
-            # right_bottom_window.bkgd(' ', curses.color_pair(5))
+            #right_bottom_window.bkgd(' ', curses.color_pair(5))
             
-        draw_centered_text_in_panel(right_bottom_window, charset=current_charset)
+        draw_centered_text_in_panel(window=right_bottom_window, charset=current_charset)
 
-        # Dibujar el footer
-        #footer_window.clear()
         footer_window.bkgd(' ', curses.color_pair(97))
         footer_window.addstr(0, max(0, (width - len(footer_text)) // 2), footer_text)
         footer_window.refresh()
@@ -843,7 +890,10 @@ def draw_screen(stdscr):
         cant_show_config_mode.addstr(height - 1, text_x2, current_text2)
         cant_show_config_mode.refresh()
         
-def main(stdscr):
+def main(stdscr) -> None:
+    '''
+    This function is responsible for the main loop and processing all key presses and performing subsequent actions, such as setting new values ​​for variables.
+    '''
     global show_help_panel, current_configuration_index, current_customization_index, current_panel, current_configuration, footer_text, dynamic_num_var_left, dynamic_num_var_right
     
     curses.curs_set(0)
@@ -864,7 +914,7 @@ def main(stdscr):
         if current_configuration['Sounds']:
             play(sound=sound, index=index)
            
-    def set_new_value(key, new_value, play_sound=True, sound: str='turn'):
+    def set_new_value(key: str, new_value: Union[str, bool, int], play_sound: bool = True, sound: str = 'turn') -> None:
         global bottom_help_customization_text, bottom_help_configuration_text
         current_configuration[key] = new_value
         bottom_help_configuration_text = generate_dynamic_helps()[0]
@@ -872,11 +922,11 @@ def main(stdscr):
 
         if play_sound: play_sound_function(sound=sound)
                 
-    def set_backup_folder(key, new_value, play_sound=False):
+    def set_backup_folder(key: str, new_value: str, play_sound: bool = False) -> None:
         set_new_value(key=key, new_value=str(new_value), play_sound=play_sound)
     
-    def set_notification(key, new_value, play_sound=False, sound: str='turn'):
-        def check_notification_type():
+    def set_notification(key: str, new_value: int, play_sound: bool = False, sound: str = 'turn') -> None:
+        def check_notification_type() -> None:
             sound = 'error' if key == 'Error Notification' else 'success'
             play_sound_function(sound=sound, index=new_value)
             
@@ -884,31 +934,20 @@ def main(stdscr):
         if not play_sound and sound == 'switch_option':
             check_notification_type()
             
-    def toggle_color_highlighting(key, new_value):
+    def toggle_color_highlighting(key: str, new_value: bool) -> None:
         global colors_has_changed
         set_new_value(key=key, new_value=new_value)
         colors_has_changed = True
         setup_colors()
     
-    def autocomplete_path(current_path):
-        if not current_path:
-            return ""
-        
-        # Separar directorio y prefijo
+    def autocomplete_path(current_path: str) -> str:
+        if not current_path: return ""
         directory, prefix = os.path.split(current_path)
-        
-        # Si no hay directorio explícito, usar el actual
-        if not directory:
-            directory = "."
+        if not directory: directory = "."
 
         try:
-            # Listar elementos en el directorio
             items = os.listdir(directory)
-            
-            # Filtrar elementos que coincidan con el prefijo
             matches = [item for item in items if item.startswith(prefix)]
-            
-            # Retornar la primera coincidencia o el prefijo original si no hay coincidencias
             return os.path.join(directory, matches[0]) if matches else current_path
         except FileNotFoundError:
             return current_path
@@ -965,7 +1004,7 @@ def main(stdscr):
                     input_string += chr(char)
                 
                 elif char == 9 and input_string != '' and current_key in {'Backup Folder',}:
-                    input_string = autocomplete_path(input_string)
+                    input_string = autocomplete_path(current_path=input_string)
                 
                 elif char in (127, curses.KEY_BACKSPACE) and input_string != '':
                     input_string = input_string[:-1] 
@@ -1010,7 +1049,7 @@ def main(stdscr):
                        
         else:
             if char == ord('q') or char == ord('Q'):
-                if current_configuration != CURRENT_CONFIGURATION_BACKUP: save_changes_on_ini(generate_dict_to_save_changes())
+                if current_configuration != CURRENT_CONFIGURATION_BACKUP: save_changes_on_ini(dict=generate_dict_to_save_changes())
                 break
             
             elif char == 27:

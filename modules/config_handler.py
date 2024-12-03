@@ -194,16 +194,22 @@ def get_value(section: str, option: str) -> Union[str , bool , int]:
     return value                      
 
 
-def set_value(section: str, option: str, value) -> None:
+def set_value(section: str, option: str, value, config_path: str=None) -> None:
     '''
     Sets the value of the given key (config.ini)
     '''
+    if config_path:
+        file = config_path
+        config.read(file)
+    else:
+        file = CONFIG_PATH
+        
     if isinstance(value, bool): new_value = 'ON' if value else 'OFF'
     elif isinstance(value, int): new_value = str(value)
     else: new_value = str(value)
 
     config.set(section, option, new_value)
-    with open(os.path.abspath(CONFIG_PATH), 'w') as configfile:
+    with open(os.path.abspath(file), 'w') as configfile:
         config.write(configfile)
     
             
@@ -224,10 +230,13 @@ def get_json_value(option: str, option_list: tuple=None) -> Union[str , bool , i
         return value_list
     
     
-def set_json_value(option: str, value) -> None:
+def set_json_value(option: str, value, json_path: str=None) -> None:
     '''
     Sets the value of the given key (config.json)
     '''
+    if json_path: file = json_path
+    else: file = JSON_PATH
+    
     with open(os.path.abspath(JSON_PATH), "r") as json_file:
         data = json.load(json_file)
 

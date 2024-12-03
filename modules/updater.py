@@ -15,18 +15,64 @@
 This is the main module in charge of checking if there are any updates available
 and updating Zeven from the official Github repository
 '''
-import requests
+import requests, os, shutil
+from .config_handler import (ini_to_dict, 
+                             set_value,
+                             set_json_value)
 
-def update_zeven(new_version):
-    # Testing 0001
+def update_zeven(new_version: str, app_path: str):
+    # Testing 0003
+    old_versions_count = 1
     try:
+        try:
+            current_configuration_dict = ini_to_dict()
+            new_path_name = os.path.abspath(os.path.join(app_path, '..', f'Zeven_old_version{old_versions_count}'))
+            os.rename(app_path, new_path_name)
+            os.system(f'git clone https://github.com/Syyysco/Zeven {app_path}')
+            
+            set_json_value(option='first_check', value=1, json_path=os.path.abspath(os.path.join(app_path, 'config', 'config.json')))
+            # first_check
+            
+            try:
+                for section_name, section in current_configuration_dict.items():
+                    for key, value in section.items():
+                        set_value(section=section_name, option=key, value=value, config_path=os.path.abspath(os.path.join(app_path, 'config', 'config.ini')))
+            except Exception as e:
+                return 'ERROR', str(e)
+            
+        except Exception as e:
+            if os.path.exists(app_path):
+                try: 
+                    shutil.rmtree(app_path)
+                except:
+                    for i in range(1000):
+                        if os.path.exists(os.path.abspath(os.path.join(app_path, '..', f'Zeven_update_error{old_versions_count}'))):
+                            old_versions_count += 1
+                            continue
+                        else:
+                            os.rename(app_path, os.path.abspath(os.path.join(app_path, '..', f'Zeven_update_error{old_versions_count}')))
+            
+            os.rename(new_path_name, app_path)
+            return 'ERROR', f'There was an error updating the application: {str(e)}'
+        
+        if os.path.exists(new_path_name):
+            try: shutil.rmtree(new_path_name)
+            except Exception as e: 
+                old_versions_count = 0
+                for i in range (1000):
+                    if os.path.exists(os.path.abspath(os.path.join(app_path, '..', f'Zeven_old_version{old_versions_count}'))):
+                        old_versions_count += 1
+                        continue
+                    else:
+                        os.rename(new_path_name, os.path.abspath(os.path.join(app_path, '..', 'Zeven_old_version')))
+        
         return 'COMPLETED', f'Zeven updated to v{new_version}'
     except Exception as e:
         return 'ERROR', f'There was an error updating the application: {str(e)}'
 
 
 
-def check_update() -> str:
+def check_update(app_path: str) -> list:
     try:
         have_conection = True if requests.get("https://google.com").status_code == 200 else False
         if not have_conection:
@@ -43,7 +89,7 @@ def check_update() -> str:
                 new_version = float(response.text.strip())
 
                 if version < new_version: 
-                    update_response = update_zeven(new_version)
+                    update_response = update_zeven(new_version=str(new_version), app_path=app_path)
                     return update_response
                 else:
                     return 'OK', 'Zeven is up to date with the latest version'
