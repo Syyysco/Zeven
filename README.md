@@ -57,7 +57,7 @@
    ```powershell
    git clone https://github.com/Syyysco/Zeven.git
    ```
-- If you have already installed the tool and want to remove everything, simply go to the tool folder (where you cloned or moved it) and run the following command:
+- If you have already installed the tool and want to remove everything, simply go to the tool folder (where you cloned or moved it) and run the following command and then delete the Zeven folder:
   ```
   pip3 uninstall -r requirements.txt
   ```
