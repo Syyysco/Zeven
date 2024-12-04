@@ -49,8 +49,9 @@
 <br>
 
 # Install
+
 >[!IMPORTANT]
-> Do not clone the repository or run the tool as root or administrator user, it will fail when running.
+> Do not clone the repository or run the tool as root or administrator user, it will fail when running. <br>
 
  
 - As a first step it is important to emphasize that you need to have **git installed**, you can install it from <a href="https://git-scm.com/downloads">here</a>. After that you simply have to clone this repository:
@@ -63,7 +64,14 @@
   ```
 > In the case of Windows, change requirements.txt to win-requirements.txt
 
-<br>
+<br><br>
+<p align="center">
+  <img src="https://img.shields.io/badge/PS-PowerShell-blue?logoColor=blue&labelColor=blue&color=cyan" alt="Build Status"></a>
+  <img src="https://img.shields.io/badge/WSL-Windows_Subsystem_For_Linux-blue?logoColor=white&labelColor=white&color=1c4eb1" alt="Build Status"></a>
+  <img src="https://img.shields.io/badge/CMD-blue?logo=zsh&logoColor=white&labelColor=1c1c1c&color=2c2c2c" alt="Build Status"></a>
+  <img src="https://img.shields.io/badge/Bash/Zsh_Linux-blue?logo=linux&logoColor=white&labelColor=4e1b38&color=370e25" alt="Build Status"></a>
+  <img src="https://img.shields.io/badge/Bash/Zsh_MacOS-blue?logo=apple&logoColor=black&labelColor=white&color=9c9c9c" alt="Build Status"></a>
+</p><br>
 
 ## Installation for Windows
 1. You need to have **python3 installed**, if you don't have it installed you can do it from the <a href="https://apps.microsoft.com/detail/9nrwmjp3717k?hl=us-us&gl=US">Microsoft Store</a> or by running the following command on your terminal (CMD or PowerShell):
@@ -72,7 +80,7 @@
    ```
    
 2. If you installed a version later than or equal to python3.4, pip will already be installed by default (it will be necessary for this step), if you have another version you can install pip very easily with <a href="https://phoenixnap.com/kb/install-pip-windows">this guide</a> (two steps).
-In case **pip is installed** (check it with `pip --version`), you can continue **installing the requirements** for windows with this command:
+In case **pip is installed** (check it with `pip --version`), You can continue by accessing the Zeven directory and **installing the requirements** for windows with this command:
    ```powershell
    pip install -r win-requirements.txt
    ```
@@ -89,7 +97,7 @@ Remember to report any bugs, or suggest any changes or additions in the <a href=
    ```
    
 2. If you installed a version later than or equal to python3.4, pip will already be installed by default (it will be necessary for this step), if you have another version you can install pip very easily with <a href="https://robots.uc3m.es/installation-guides/install-pip.html">this guide</a> (one step).
-In case **pip is installed** (check it with `pip3 --version`), you can continue **installing the requirements** with this command:
+In case **pip is installed** (check it with `pip3 --version`), you can continue by accessing the Zeven directory and **installing the requirements** with this command:
    ```bash
    pip3 install -r requirements.txt
    ```
