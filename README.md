@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="src/doc/banner.png" alt="Zeven - A powerful code booster"><br><br>
+  <img src="src/doc/banner-shadow.png" alt="Zeven - A powerful code booster"><br><br>
   <img src="https://img.shields.io/badge/%20-python-blue?logo=python&logoColor=white&labelColor=2c2c2c" alt="Build Status"></a>
   <img src="https://img.shields.io/badge/license-GPL-purple?logo=gnuprivacyguard" alt="license">
   <img src="https://img.shields.io/github/last-commit/Syyysco/Zeven?colorB=319e8c" alt="Last Commit">
