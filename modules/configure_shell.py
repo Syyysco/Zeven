@@ -536,25 +536,20 @@ def setup_colors() -> None:
             curses.init_pair(99, curses.COLOR_BLACK, 109) # General Window
             
         if 'windows' in platform.system().lower() and int(platform.version().split('.')[0]) >= 10:
-            custom_color_1 = hex_to_rgb("#44475A")  # Title BG
-            custom_color_2 = hex_to_rgb("#202228")  # Top Right BG
-            custom_color_3 = hex_to_rgb("#242632")  # Top Left BG
-            custom_color_4 = hex_to_rgb("#282A36")  # Bottom Right BG
-            custom_color_5 = hex_to_rgb("#282A36")  # Bottom Right BG
-            custom_color_61 = hex_to_rgb("#44475A") # Bottom Right FG
-            custom_color_62 = hex_to_rgb("#44475A") # Top Panels FG
-            custom_color_63 = hex_to_rgb("#313242") # Selected-Item BG
-            custom_color_64 = hex_to_rgb("#222530") # First & Last item BG
-            custom_color_65 = hex_to_rgb("#292a35") # Non-Selected-Item BG
-            custom_color_66 = hex_to_rgb("#4c4d62") # Non-Selected-Item FG -----
-            custom_color_67 = hex_to_rgb("#8BE9FD") # Selected-Item Enabled FG
-            custom_color_68 = hex_to_rgb("#282a35") # Dup-Item BG
-            custom_color_69 = hex_to_rgb("#FF79C6") # Selected-Item Disabled FG
-            custom_color_70 = hex_to_rgb("#363947") # Dup-Item FG
-            custom_color_71 = hex_to_rgb("#2f3240") # First & Last item FG
-            custom_color_98 = hex_to_rgb("#282A36") # Separator BG
-            custom_color_99 = hex_to_rgb("#282A36") # General Background
-            init_colors()
+            curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)    # Titles
+            curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_WHITE)    # Top Right
+            curses.init_pair(3, curses.COLOR_WHITE, curses.COLOR_BLACK)    # Top Left
+            curses.init_pair(4, curses.COLOR_WHITE, curses.COLOR_BLACK)    # Bottom Right
+            curses.init_pair(5, curses.COLOR_WHITE, curses.COLOR_BLACK)    # Bottom Left
+            curses.init_pair(43, curses.COLOR_CYAN, curses.COLOR_BLACK)    # Selected-Item 1
+            curses.init_pair(44, curses.COLOR_WHITE, curses.COLOR_BLACK)   # First & last item
+            curses.init_pair(45, curses.COLOR_WHITE, curses.COLOR_BLACK)   # Non- Selected-Item 1
+            curses.init_pair(46, curses.COLOR_WHITE, curses.COLOR_BLACK)   # Non-Selected-Item 2
+            curses.init_pair(47, curses.COLOR_RED, curses.COLOR_BLACK)     # Selected-Item 2
+            curses.init_pair(48, curses.COLOR_WHITE, curses.COLOR_BLACK)   # Dup-Item
+            curses.init_pair(97, curses.COLOR_WHITE, curses.COLOR_BLACK)   # Footer
+            curses.init_pair(98, curses.COLOR_RED, curses.COLOR_BLACK)     # V-Separator
+            curses.init_pair(99, curses.COLOR_WHITE, curses.COLOR_BLACK)   # General
             shell = 'win>10'
         elif 'windows' not in platform.system().lower() and not any(keyword in platform.uname().release.lower() for keyword in ("wsl", "microsoft", "windows")):
             custom_color_1 = hex_to_rgb("#44475A")  # Title BG
