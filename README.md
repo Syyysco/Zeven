@@ -409,6 +409,40 @@ hint: See PEP 668 for the detailed specification.
 
 ---
 
+### Error installing requirements on Bash/Zsh
+Are you getting the following error?
+```powershell
+  Preparing metadata (setup.py) ... error
+  error: subprocess-exited-with-error
+
+  × python setup.py egg_info did not run successfully.
+  │ exit code: 1
+  ╰─> [6 lines of output]
+      Traceback (most recent call last):
+        File "<string>", line 2, in <module>
+        File "<pip-setuptools-caller>", line 34, in <module>
+        File "/tmp/pip-install-57api9bk/grapheme_9a33c91994e045e0bc521c8e6dd44e02/setup.py", line 2,>          from setuptools import setup, find_packages
+      ImportError: cannot import name 'setup' from 'setuptools' (unknown location)
+      [end of output]
+
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+```
+This problem is simply because the `setuptools` library on your system is not updated, you just need to update it with the following command:
+```powershell
+pip3 install --upgrade pip setuptools
+```
+
+<br>
+
+---
+
 ### Error installing requirements on Windows
 ```powershell
 ERROR: Could not find a version that satisfies the requirement windows-curses==2.4.0 (from versions: none)
