@@ -74,7 +74,7 @@ INTEGRITY_CONFIG_CHECK_FAIL = check_configuration_integrity()
 try:
     from modules.settings import *
 except Exception:
-    print(f"\n\033[91mERROR ->\033[0m The 'config.ini' file was not found and a new one has been created, please run sevven again")
+    sys.stderr.write(f"\n\033[91mERROR ->\033[0m The 'config.ini' file was not found and a new one has been created, please run sevven again")
     sys.exit(1)
 
 from modules.format_calls import *
@@ -130,12 +130,12 @@ def init() -> None:
     
     def FAIL(str: str, debugID: str, start: str='') -> None:    # This function is called when an error occurs and it is necessary to stop execution (code 1).
         if not DEBUG_MODE: debugID = ''
-        if VERBOSITY_LEVEL > 0: print(f'{start}{Colors.FAIL}ERROR -> {Colors.END}{str}\t{Colors.FAIL}{debugID}{Colors.END}')
+        if VERBOSITY_LEVEL > 0: sys.stderr.write(f'\n{start}{Colors.FAIL}ERROR -> {Colors.END}{str}\t{Colors.FAIL}{debugID}{Colors.END}')
         sys.exit(1)
     
     def WARNING(str: str, debugID: str, start: str='') -> None: # This function is called when an error occurs but it is not necessary to stop execution 
         if not DEBUG_MODE: debugID = ''
-        if VERBOSITY_LEVEL >= 4: print(f'{start}{Colors.WARNING}WARNING -> {Colors.END}{str}\t{Colors.WARNING}{debugID}{Colors.END}')
+        if VERBOSITY_LEVEL >= 4: sys.stderr.write(f'\n{start}{Colors.WARNING}WARNING -> {Colors.END}{str}\t{Colors.WARNING}{debugID}{Colors.END}')
     
     def OUTLOG(str: str, vlevel: int = 10, debug: bool = False, start: str='') -> None:
         if (debug and DEBUG_MODE) or vlevel <= VERBOSITY_LEVEL: print(f'{start}{str}')
@@ -295,7 +295,6 @@ def init() -> None:
                     if any(f in detect for f in file_format):
                         formated_content = control(file_format=detect, main_content=content) # Format the content
                         save_file(output_file, formated_content) #!NOTE: Disable to debug if you wish 
-                        size_after += os.path.getsize(os.path.abspath(output_file))
                         files_updated += 1 
                         OUTLOG(str=f'{Colors.OKCYAN}✓ {Colors.END}{os.path.basename(output_file)}', vlevel=3)
                         OUTLOG(str=f'{Colors.GRAY}│ {FMT_DETECTION}\n│ Path:      {input_file}{Colors.END}', debug=True)
@@ -309,6 +308,8 @@ def init() -> None:
             if VERBOSITY_LEVEL >= 4:
                 if isdir: OUTLOG(str=f'{general_warning.strip()}\n{Colors.GRAY}│ {FMT_DETECTION}\n│ Path:      {input_file}{Colors.END}', debug=True)
             if not isdir: ERROR(str=general_warning.strip().replace('Warning:   ', '').replace('Error:     ', ''), debugID='E020')
+        
+        size_after += os.path.getsize(os.path.abspath(output_file)) # Save new file-size
 
 
     #---------------------- CHECK CONFIGURATION & SPECIAL PARAMETERS ------------------------#
